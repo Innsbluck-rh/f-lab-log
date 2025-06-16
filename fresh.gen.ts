@@ -9,6 +9,7 @@ import * as $api_log_id_ from "./routes/api/log/[id].ts";
 import * as $api_log_add from "./routes/api/log/add.ts";
 import * as $api_log_edit from "./routes/api/log/edit.ts";
 import * as $api_log_index from "./routes/api/log/index.ts";
+import * as $api_markdown_render from "./routes/api/markdown/render.ts";
 import * as $create_index from "./routes/create/index.tsx";
 import * as $edit_id_ from "./routes/edit/[id].tsx";
 import * as $index from "./routes/index.tsx";
@@ -27,6 +28,7 @@ const manifest = {
     "./routes/api/log/add.ts": $api_log_add,
     "./routes/api/log/edit.ts": $api_log_edit,
     "./routes/api/log/index.ts": $api_log_index,
+    "./routes/api/markdown/render.ts": $api_markdown_render,
     "./routes/create/index.tsx": $create_index,
     "./routes/edit/[id].tsx": $edit_id_,
     "./routes/index.tsx": $index,

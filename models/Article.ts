@@ -6,7 +6,7 @@ export interface Article {
 }
 
 export interface ArticleRow extends Article {
-  id: string;
+  id?: string;
 }
 
 export const articleFields = ["date", "author", "title", "content"];

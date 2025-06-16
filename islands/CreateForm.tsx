@@ -1,6 +1,6 @@
 import ArticleForm from "./ArticleForm.tsx";
 
-export default function CreateForm() {
+export function CreateForm() {
   return (
     <div class="fl-col ai-center">
       <ArticleForm
@@ -13,6 +13,7 @@ export default function CreateForm() {
           return res.ok;
         }}
         mode="home"
+        enablePreview={true}
       />
     </div>
   );
