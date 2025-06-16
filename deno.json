@@ -7,7 +7,8 @@
     "start": "deno run -A --watch=static/,routes/ --env-file dev.ts",
     "build": "deno run -A --env-file dev.ts build",
     "preview": "deno run -A --env-file main.ts",
-    "update": "deno run -A --env-file -r https://fresh.deno.dev/update ."
+    "update": "deno run -A --env-file -r https://fresh.deno.dev/update .",
+    "initdb": "deno run --allow-read --allow-write .\\tools\\init_db.ts"
   },
   "lint": {
     "rules": {

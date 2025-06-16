@@ -1,7 +1,7 @@
 import { type PageProps } from "$fresh/server.ts";
 import { NavBar } from "../components/NavBar.tsx";
 
-export default function App({ Component }: PageProps) {
+export default function App({ url, Component }: PageProps) {
   return (
     <html>
       <head>
@@ -11,7 +11,7 @@ export default function App({ Component }: PageProps) {
         <link rel="stylesheet" href="/styles.css" />
       </head>
       <body>
-        <NavBar />
+        <NavBar url={url} />
         <main>
           <Component />
         </main>

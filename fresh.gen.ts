@@ -5,10 +5,17 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
-import * as $api_logs from "./routes/api/logs.ts";
+import * as $api_log_id_ from "./routes/api/log/[id].ts";
+import * as $api_log_add from "./routes/api/log/add.ts";
+import * as $api_log_edit from "./routes/api/log/edit.ts";
+import * as $api_log_index from "./routes/api/log/index.ts";
 import * as $create_index from "./routes/create/index.tsx";
+import * as $edit_id_ from "./routes/edit/[id].tsx";
 import * as $index from "./routes/index.tsx";
+import * as $ArticleForm from "./islands/ArticleForm.tsx";
+import * as $ArticleItem from "./islands/ArticleItem.tsx";
 import * as $CreateForm from "./islands/CreateForm.tsx";
+import * as $EditForm from "./islands/EditForm.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -16,12 +23,19 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
-    "./routes/api/logs.ts": $api_logs,
+    "./routes/api/log/[id].ts": $api_log_id_,
+    "./routes/api/log/add.ts": $api_log_add,
+    "./routes/api/log/edit.ts": $api_log_edit,
+    "./routes/api/log/index.ts": $api_log_index,
     "./routes/create/index.tsx": $create_index,
+    "./routes/edit/[id].tsx": $edit_id_,
     "./routes/index.tsx": $index,
   },
   islands: {
+    "./islands/ArticleForm.tsx": $ArticleForm,
+    "./islands/ArticleItem.tsx": $ArticleItem,
     "./islands/CreateForm.tsx": $CreateForm,
+    "./islands/EditForm.tsx": $EditForm,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

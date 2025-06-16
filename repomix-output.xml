@@ -265,7 +265,7 @@ export function insertLog(date: string, title: string, content: string) {
 }
 
 export function getLogs(): {
-  id: number;
+  id: string;
   date: string;
   title: string;
   content: string;
