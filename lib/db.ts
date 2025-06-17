@@ -8,6 +8,8 @@ import {
   ArticleRow,
 } from "../models/Article.ts";
 const db = new Database("data/logs.sqlite");
+const [version] = db.prepare("select sqlite_version()").value<[string]>()!;
+console.log(version);
 
 function getDBFormattedArticle(log: Article): Article {
   if (log.tags !== "") {
