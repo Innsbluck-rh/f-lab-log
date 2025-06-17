@@ -7,7 +7,7 @@ import {
   articleFields,
   ArticleRow,
 } from "../models/Article.ts";
-const db = new Database("./data/logs.sqlite");
+const db = new Database("data/logs.sqlite");
 
 function getDBFormattedArticle(log: Article): Article {
   if (log.tags !== "") {
