@@ -17,5 +17,4 @@ db.execute(`
   );
 `);
 
-console.log("DB initialized.");
 db.close();

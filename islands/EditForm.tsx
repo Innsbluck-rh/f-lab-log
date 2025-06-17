@@ -12,7 +12,6 @@ export default function EditForm(
             method: "POST",
             body: JSON.stringify(article),
           });
-          console.log(res);
           return res.ok;
         }}
         mode="home"

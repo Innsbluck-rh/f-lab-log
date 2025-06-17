@@ -1,5 +1,5 @@
 // lib/db.ts
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { Database } from "jsr:@db/sqlite@0.11";
 import {
   Article,
   articleAsArray,
@@ -7,8 +7,7 @@ import {
   articleFields,
   ArticleRow,
 } from "../models/Article.ts";
-
-const db = new DB("./data/logs.sqlite");
+const db = new Database("./data/logs.sqlite");
 
 function getDBFormattedArticle(log: Article): Article {
   if (log.tags !== "") {
@@ -36,11 +35,11 @@ export function insertLog(article: Article) {
   article = getDBFormattedArticle(article);
   const empties = new Array(articleFields.length).fill("?");
 
-  db.query(
+  db.exec(
     `INSERT INTO logs (${articleFields.join(", ")}) VALUES (${
       empties.join(", ")
     })`,
-    articleAsArray(article),
+    ...articleAsArray(article),
   );
 }
 
@@ -50,18 +49,18 @@ export function editLog(id: string, article: Article) {
     return `${key} = '${value}'`;
   }).join(", ");
 
-  db.query(
+  db.exec(
     `UPDATE logs SET ${updateStr} WHERE id = ${id}`,
   );
 }
 export function deleteLog(id: string) {
-  db.query(
+  db.exec(
     `DELETE FROM logs WHERE id = ${id}`,
   );
 }
 
 export function getLog(id: string): ArticleRow | undefined {
-  const entries = db.queryEntries(`SELECT * FROM logs WHERE id = ${id}`);
+  const entries = db.sql`SELECT * FROM logs WHERE id = ${id}`;
   const log = entries.length > 0
     ? entries[0] as unknown as ArticleRow
     : undefined;
@@ -84,9 +83,8 @@ export function getLogs(query?: string, tagSearch?: boolean): ArticleRow[] {
     }`
     : "";
 
-  const entries = db.queryEntries(
-    `SELECT * FROM logs ${queryStr} ORDER BY id DESC`,
-  );
+  const entries = db.prepare(`SELECT * FROM logs ${queryStr} ORDER BY id DESC`)
+    .all();
   return entries.map((entry) => {
     return decodeDBFormattedArticle(entry as unknown as ArticleRow);
   });
@@ -101,11 +99,8 @@ export function aggregateBy(year: string, month?: string): ArticleRow[] {
     const yStr = year.padStart(4, "0");
     condition = `WHERE strftime('%Y', date) = '${yStr}'`;
   }
-  const entries = db.queryEntries(
-    `SELECT * FROM logs ${condition}`,
-  );
+  const entries = db.prepare(`SELECT * FROM logs ${condition}`).all();
 
-  console.log(`SELECT * FROM logs ${condition}`);
   return entries.map((entry) => {
     return decodeDBFormattedArticle(entry as unknown as ArticleRow);
   });
@@ -115,13 +110,11 @@ export function getMonthlyCounts(): {
   ym: string;
   count: number;
 }[] {
-  const entries = db.queryEntries<{
+  const entries = db.sql<{
     ym: string;
     count: number;
-  }>(
-    `SELECT strftime('%Y-%m', date) AS ym, COUNT(date) AS count
-    FROM logs GROUP BY ym`,
-  );
+  }>`SELECT strftime('%Y-%m', date) AS ym, COUNT(date) AS count
+    FROM logs GROUP BY ym`;
 
   return entries;
 }

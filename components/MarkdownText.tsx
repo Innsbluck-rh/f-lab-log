@@ -1,3 +1,5 @@
+import { useEffect } from "preact/hooks";
+
 export function MarkdownText(
   props: { rawMarkdownStr: string },
 ) {
@@ -27,7 +29,9 @@ export function MarkdownText(
   };
 
   const content = props.rawMarkdownStr;
-  fetchRendered(content);
+  useEffect(() => {
+    fetchRendered(content);
+  }, []);
 
   return (
     <div
