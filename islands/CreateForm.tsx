@@ -13,7 +13,7 @@ export function CreateForm() {
           return res.ok;
         }}
         mode="home"
-        enablePreview={true}
+        enablePreview
       />
     </div>
   );

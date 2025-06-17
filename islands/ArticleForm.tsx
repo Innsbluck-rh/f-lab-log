@@ -129,7 +129,7 @@ export default function ArticleForm(props: {
 
       <div class="fl-col">
         <p>PREVIEW</p>
-        <ArticleItem article={article.value} preview={true} />
+        <ArticleItem article={article.value} preview />
       </div>
     </div>
   );

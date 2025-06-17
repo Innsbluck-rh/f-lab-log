@@ -17,7 +17,7 @@ export default function EditForm(
         }}
         mode="home"
         defaultValue={props.defaultValue}
-        enablePreview={true}
+        enablePreview
       />
     </div>
   );
