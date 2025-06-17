@@ -1,4 +1,5 @@
 import { MarkdownText } from "../components/MarkdownText.tsx";
+import { TagItem } from "../components/TagItem.tsx";
 import { ArticleRow } from "../models/Article.ts";
 
 export function ArticleItem(
@@ -10,19 +11,60 @@ export function ArticleItem(
   }
 
   return (
-    <div class="fl-col" style={{ position: "relative", gap: "12px" }}>
+    <div class="fl-col" style={{ position: "relative", gap: "8px" }}>
       {/* <p>{props.article.id}</p> */}
       <h1 style={{ fontSize: "1.5em" }}>
-        {article.date}・{article.title}
+        {/* {article.date}・{article.title} */}
+        {article.date.replaceAll("-", "/")}
       </h1>
+      <p style={{ fontSize: "0.9em", color: "#555" }}>
+        {article.in_time} ⇀ {article.out_time}
+      </p>
 
-      <div style={{ marginTop: "12px", marginBottom: "16px" }}>
+      <div style={{ marginTop: "16px", marginBottom: "32px" }}>
         <MarkdownText rawMarkdownStr={article.content} />
       </div>
 
-      <p style={{ fontSize: "0.75em", color: "gray" }}>
-        作成者: {article.author}
-      </p>
+      {
+        /* <div
+        class="fl-row w100"
+        style={{ justifyContent: "right" }}
+      >
+        <div
+          class="fl-row"
+          style={{ width: "200px", height: "1px", backgroundColor: "#DDD" }}
+        >
+        </div>
+      </div> */
+      }
+
+      <div class="fl-row ai-center">
+        <p>tags:</p>
+        <div
+          class="fl-row"
+          style={{ marginLeft: "12px", gap: "16px", flexGrow: 1 }}
+        >
+          {article.tags !== ""
+            ? article.tags.split(",").map((tag, i) => {
+              return <TagItem key={i} text={tag} />;
+            })
+            : (
+              <p
+                style={{
+                  fontSize: "0.7em",
+                  // fontStyle: "italic",
+                  fontFamily: "Consolas",
+                  color: "#AAA",
+                }}
+              >
+                (No Tags)
+              </p>
+            )}
+        </div>
+        <p style={{ fontSize: "0.75em", color: "gray" }}>
+          author: {article.author}
+        </p>
+      </div>
 
       <div
         class="fl-row"

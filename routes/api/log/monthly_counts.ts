@@ -1,10 +1,10 @@
 import { Handlers } from "$fresh/server.ts";
-import { aggregateBy, getLogs } from "../../../lib/db.ts";
+import { getMonthlyCounts } from "../../../lib/db.ts";
 
 export const handler: Handlers = {
   GET(_req) {
-    const logs = getLogs();
-    return new Response(JSON.stringify(logs), {
+    const monthlyCounts = getMonthlyCounts();
+    return new Response(JSON.stringify(monthlyCounts), {
       headers: { "Content-Type": "application/json" },
     });
   },

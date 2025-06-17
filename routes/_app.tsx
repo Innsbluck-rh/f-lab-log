@@ -1,7 +1,9 @@
 import { type PageProps } from "$fresh/server.ts";
 import { NavBar } from "../components/NavBar.tsx";
 
-export default function App({ url, Component }: PageProps) {
+export default function App(
+  { url, Component }: PageProps,
+) {
   return (
     <html>
       <head>
@@ -12,10 +14,12 @@ export default function App({ url, Component }: PageProps) {
         <link rel="stylesheet" href="/gfm.css" />
       </head>
       <body>
-        <NavBar url={url} />
-        <main>
-          <Component />
-        </main>
+        <div class="fl-col" style={{ padding: "32px" }}>
+          <NavBar url={url} />
+          <main>
+            <Component />
+          </main>
+        </div>
       </body>
     </html>
   );

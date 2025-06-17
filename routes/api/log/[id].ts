@@ -1,12 +1,12 @@
 import { Handlers } from "$fresh/server.ts";
-import { deleteLog, editLog, getLog, insertLog } from "../../../lib/db.ts";
+import { deleteLog, editLog, getLog } from "../../../lib/db.ts";
 import { Article, isArticleValid } from "../../../models/Article.ts";
 
 export const handler: Handlers = {
   GET(_req, ctx) {
     const { id } = ctx.params;
-    const logs = getLog(id);
-    return new Response(JSON.stringify(logs), {
+    const article = getLog(id);
+    return new Response(JSON.stringify(article), {
       headers: { "Content-Type": "application/json" },
     });
   },

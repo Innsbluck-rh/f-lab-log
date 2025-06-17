@@ -9,6 +9,7 @@ export const handler: Handlers = {
     if (!isArticleValid(article)) {
       return new Response("Missing fields", { status: 400 });
     }
+
     insertLog(article);
     return new Response("OK", { status: 200 });
   },

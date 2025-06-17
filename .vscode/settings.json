@@ -14,5 +14,7 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "deno.envFile": ".env"
 }

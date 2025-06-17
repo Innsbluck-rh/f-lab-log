@@ -1,5 +1,7 @@
 export interface Article {
   date: string;
+  in_time: string;
+  out_time: string;
   author: string;
   title: string;
   content: string;
@@ -12,15 +14,19 @@ export function getDefaultArticle(): Article {
     "/",
     "-",
   );
-  const defaultAuthorStr = "神野 修平";
   const defaultTitleStr = "日報";
+  const defaultAuthorStr = "神野 修平";
+  const defaultInTimeStr = "08:30";
+  const defaultOutTimeStr = "17:20";
 
   return {
     date: defaultDateStr,
     title: defaultTitleStr,
     author: defaultAuthorStr,
+    in_time: defaultInTimeStr,
+    out_time: defaultOutTimeStr,
     content: "",
-    tags: "a,b,c,d",
+    tags: "",
   };
 }
 
@@ -28,7 +34,28 @@ export interface ArticleRow extends Article {
   id?: string;
 }
 
-export const articleFields = ["date", "author", "title", "content", "tags"];
+export const articleFields = [
+  "date",
+  "author",
+  "in_time",
+  "out_time",
+  "title",
+  "content",
+  "tags",
+];
+export const requiredFields = [
+  "date",
+  "author",
+  // "in_time",
+  // "out_time",
+  "title",
+  "content",
+  // "tags",
+];
+
+export function isRequiredField(fieldName: string) {
+  return requiredFields.indexOf(fieldName) !== -1;
+}
 
 export function articleAsArray(article: Article): string[] {
   return articleFields.map((fieldName) => {

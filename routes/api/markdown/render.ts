@@ -6,9 +6,7 @@ export const handler: Handlers = {
     const data = await req.json();
     return new Response(
       JSON.stringify({
-        rendered: render(data.content, {
-          disableHtmlSanitization: true,
-        }),
+        rendered: render(data.content, {}),
       }),
       { status: 200 },
     );

@@ -56,21 +56,18 @@ html {
   display: flex;
   flex-direction: column;
   width: 100%;
-  box-sizing: content-box;
   align-items: center;
   background-color: #eee;
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: 100svh;
+  max-width: 1200px;
   flex-grow: 1;
-  max-width: 800px;
-  padding: 36px;
   padding-bottom: 72px;
-  box-sizing: content-box;
-  align-items: center;
   background-color: #fff;
 }
 
@@ -78,6 +75,13 @@ main {
   display: flex;
   flex-direction: column;
   padding: 36px;
+  padding-top: 72px;
+}
+
+label {
+  font-family: "Consolas";
+  font-size: 0.9em;
+  min-width: 56px;
 }
 
 .w100 {
@@ -107,14 +111,41 @@ main {
 }
 
 .articles-root {
-  width: 600px;
+  width: 650px;
+}
+
+.articles-side {
+  width: 200px;
+  margin-left: 50px;
 }
 
 .form-root {
-  width: 600px;
+  width: 400px;
+}
+
+.form-side {
+  width: 400px;
+  margin-left: 100px;
 }
 
 .selected {
   color: red;
   font-weight: bold;
+}
+
+.create-button {
+  padding: 2px 8px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+}
+
+.create-button.selected {
+  color: white;
+  background-color: #bbb;
+  pointer-events: none;
+}
+
+.create-button:hover {
+  background-color: #555;
 }
