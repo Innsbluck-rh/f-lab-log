@@ -64,9 +64,11 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100dvh;
+  flex-grow: 1;
   max-width: 800px;
   padding: 36px;
+  padding-bottom: 72px;
   box-sizing: content-box;
   align-items: center;
   background-color: #fff;
@@ -75,9 +77,7 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   padding: 36px;
-  box-sizing: border-box;
 }
 
 .w100 {
@@ -112,4 +112,9 @@ main {
 
 .form-root {
   width: 600px;
+}
+
+.selected {
+  color: red;
+  font-weight: bold;
 }

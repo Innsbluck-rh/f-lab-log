@@ -11,17 +11,7 @@ import {
 const db = new DB("data/logs.sqlite");
 
 export function insertLog(article: Article) {
-  console.log("a");
   const empties = new Array(articleFields.length).fill("?");
-
-  console.log(
-    `INSERT INTO logs (${articleFields.join(", ")}) VALUES (${
-      empties.join(", ")
-    })`,
-  );
-  console.log(
-    articleAsArray(article),
-  );
 
   db.query(
     `INSERT INTO logs (${articleFields.join(", ")}) VALUES (${

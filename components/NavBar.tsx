@@ -13,20 +13,20 @@ export function NavBar(props: { url?: URL }) {
         Fujimi_Log
       </a>
       <a
+        class={props.url?.pathname === "/" ? "selected" : ""}
         style={{
           fontFamily: "Consolas",
           textDecoration: "none",
-          color: props.url?.pathname === "/" ? "red" : "inherit",
         }}
         href="/"
       >
         Home
       </a>
       <a
+        class={props.url?.pathname === "/create" ? "selected" : ""}
         style={{
           fontFamily: "Consolas",
           textDecoration: "none",
-          color: props.url?.pathname === "/create" ? "red" : "inherit",
         }}
         href="/create"
       >

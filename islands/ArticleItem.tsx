@@ -15,17 +15,24 @@ export function ArticleItem(
       <h1 style={{ fontSize: "1.5em" }}>
         {article.date}・{article.title}
       </h1>
-      <p>
-        {article.content}
-      </p>
-      {/* <MarkdownText rawMarkdownStr={article.content} /> */}
+
+      <div style={{ marginTop: "12px", marginBottom: "16px" }}>
+        <MarkdownText rawMarkdownStr={article.content} />
+      </div>
+
       <p style={{ fontSize: "0.75em", color: "gray" }}>
         作成者: {article.author}
       </p>
 
       <div
         class="fl-row"
-        style={{ position: "absolute", right: "12px", top: 0, gap: "12px" }}
+        style={{
+          position: "absolute",
+          right: "12px",
+          top: 0,
+          gap: "12px",
+          visibility: props.preview ? "collapse" : "visible",
+        }}
       >
         <a
           href={`/edit/${article.id}`}
@@ -43,8 +50,6 @@ export function ArticleItem(
               method: "DELETE",
               body: JSON.stringify({}),
             });
-            console.log(res);
-
             if (res.ok) location.reload();
           }}
         >

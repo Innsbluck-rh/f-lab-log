@@ -1,5 +1,7 @@
 import { useSignal } from "@preact/signals";
-import { Article } from "../models/Article.ts";
+import { Article, getDefaultArticle } from "../models/Article.ts";
+import { ArticleItem } from "./ArticleItem.tsx";
+import { TagItem } from "../components/TagItem.tsx";
 
 type SubmitMode = "home" | "reset" | "nothing";
 
@@ -10,11 +12,12 @@ export default function ArticleForm(props: {
   onArticleSubmit?: (article: Article) => boolean | Promise<boolean>;
 }) {
   let formEl: HTMLFormElement | null;
-  let previewEl: HTMLDivElement | null;
 
   const status = useSignal("idle");
-
-  const rendered = useSignal("");
+  const defaultArticle = props.defaultValue ?? getDefaultArticle();
+  const article = useSignal<Article>(
+    defaultArticle,
+  );
 
   async function handleSubmit(e: Event) {
     if (!formEl) return;
@@ -39,34 +42,14 @@ export default function ArticleForm(props: {
     }
   }
 
-  async function handleChange() {
+  function handleChange() {
     if (!formEl) return;
     const formData = new FormData(formEl);
-    const article = Object.fromEntries(
+    article.value = Object.fromEntries(
       formData.entries(),
     ) as unknown as Article;
-
-    const res = await fetch("/api/markdown/render", {
-      method: "POST",
-      body: JSON.stringify({
-        content: article.content,
-      }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (previewEl) {
-        previewEl.setHTMLUnsafe(data.rendered);
-        previewEl.style = `${data.css}; white-space: pre;`;
-      }
-    }
+    console.log(article.peek());
   }
-
-  const nowDate = new Date();
-  const defaultDateStr = nowDate.toLocaleDateString("sv-SE").replaceAll(
-    "/",
-    "-",
-  );
 
   return (
     <div class="fl-col" style={{ gap: "24px" }}>
@@ -81,7 +64,7 @@ export default function ArticleForm(props: {
           <input
             name="date"
             type="date"
-            value={props.defaultValue?.date ?? defaultDateStr}
+            defaultValue={article.peek().date}
             onInput={() => handleChange()}
             required
           />
@@ -92,7 +75,7 @@ export default function ArticleForm(props: {
           <input
             name="author"
             type="text"
-            defaultValue={props.defaultValue?.author ?? "神野 修平"}
+            defaultValue={article.peek().author}
             onInput={() => handleChange()}
             required
           />
@@ -103,7 +86,7 @@ export default function ArticleForm(props: {
           <input
             name="title"
             type="text"
-            defaultValue={props.defaultValue?.title ?? `日報`}
+            defaultValue={article.peek().title}
             onInput={() => handleChange()}
             required
           />
@@ -117,11 +100,26 @@ export default function ArticleForm(props: {
             name="content"
             type="text"
             style={{ height: "300px", resize: "vertical" }}
-            value={props.defaultValue?.content ?? ""}
+            defaultValue={article.peek().content}
             onInput={() => handleChange()}
             required
-          />
+          >
+            {article.peek().content}
+          </textarea>
         </div>
+
+        <div class="fl-row" style={{ gap: "16px" }}>
+          {article.value.tags.split(",").map((tag, i) => {
+            return <TagItem key={i} text={tag} />;
+          })}
+        </div>
+        <input
+          name="tags"
+          type="text"
+          defaultValue={article.peek().tags}
+          onInput={() => handleChange()}
+          required
+        />
 
         <div class="fl-row" style={{ gap: "16px" }}>
           <button type="submit" style={{ width: "80px" }}>SUBMIT</button>
@@ -131,17 +129,7 @@ export default function ArticleForm(props: {
 
       <div class="fl-col">
         <p>PREVIEW</p>
-        <div
-          ref={(ref) => previewEl = ref}
-          data-color-mode="light"
-          data-light-theme="light"
-          data-dark-theme="dark"
-          class="markdown-body"
-          dangerouslySetInnerHTML={{
-            __html: rendered.value,
-          }}
-        >
-        </div>
+        <ArticleItem article={article.value} preview={true} />
       </div>
     </div>
   );

@@ -12,7 +12,10 @@ export const handler: Handlers<ArticleRow[]> = {
 
 export default function Home(props: PageProps<ArticleRow[]>) {
   return (
-    <div class="fl-row ai-center" style={{ gap: "3rem", height: "100dvh" }}>
+    <div
+      class="fl-row jc-center"
+      style={{ gap: "3rem" }}
+    >
       <div class="fl-col articles-root" style={{ gap: "4rem" }}>
         {props.data.map((article, i) => (
           <ArticleItem key={i} article={article} />

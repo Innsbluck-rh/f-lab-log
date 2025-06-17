@@ -6,7 +6,6 @@ export const handler: Handlers = {
   async POST(req) {
     const data = await req.json();
     const article = data as Article;
-    console.log(article);
     if (!isArticleValid(article)) {
       return new Response("Missing fields", { status: 400 });
     }

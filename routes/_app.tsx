@@ -9,6 +9,7 @@ export default function App({ url, Component }: PageProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>fujimi-lab-log</title>
         <link rel="stylesheet" href="/styles.css" />
+        <link rel="stylesheet" href="/gfm.css" />
       </head>
       <body>
         <NavBar url={url} />
