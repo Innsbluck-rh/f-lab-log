@@ -11,6 +11,7 @@ export function CreateForm() {
           });
           return res.ok;
         }}
+        isEdit={false}
         mode="home"
         enablePreview
       />

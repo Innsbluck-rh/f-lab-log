@@ -31,7 +31,7 @@ export function ArticlesSideContent(props: {
         // backgroundColor: "#00000040",
       }}
     >
-      {!props.tag ? <SearchQueryForm query={props.query ?? ""} /> : null}
+      <SearchQueryForm query={props.query ?? ""} />
 
       <div class="fl-col">
         {Object.entries(monthlyCounts.value).map(([ym, count]) => {

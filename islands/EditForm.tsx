@@ -14,6 +14,7 @@ export default function EditForm(
           });
           return res.ok;
         }}
+        isEdit={true}
         mode="home"
         defaultValue={props.defaultValue}
         enablePreview

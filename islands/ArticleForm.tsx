@@ -11,6 +11,7 @@ type SubmitMode = "home" | "reset" | "nothing";
 export default function ArticleForm(props: {
   defaultValue?: Article;
   enablePreview?: boolean;
+  isEdit?: boolean;
   mode: SubmitMode;
   onArticleSubmit?: (article: Article) => boolean | Promise<boolean>;
 }) {
@@ -179,7 +180,7 @@ export default function ArticleForm(props: {
             name="content"
             type="text"
             autoComplete="off"
-            style={{ height: "300px", resize: "vertical" }}
+            style={{ height: "200px", resize: "vertical" }}
             defaultValue={article.peek().content}
             onInput={() => handleChange()}
             onKeyDown={(e) => {
@@ -221,9 +222,17 @@ export default function ArticleForm(props: {
           />
         </div>
 
-        <div class="fl-row" style={{ gap: "16px" }}>
-          <button type="submit" style={{ width: "80px" }}>
-            SUBMIT
+        <div class="fl-row" style={{ gap: "16px", marginTop: "12px" }}>
+          <button
+            type="submit"
+            class="create-button"
+            style={{
+              fontFamily: "Consolas",
+              textDecoration: "none",
+              appearance: "none",
+            }}
+          >
+            {props.isEdit ? "Commit Changes" : "Create"}
           </button>
           <p>{status}</p>
         </div>

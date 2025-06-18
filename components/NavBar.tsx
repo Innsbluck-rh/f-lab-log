@@ -39,17 +39,19 @@ export function NavBar(props: { url?: URL }) {
           </a>
         )
         : null}
-      <a
-        class={(props.url?.pathname === "/create" ? "selected " : "") +
-          "create-button"}
-        style={{
-          fontFamily: "Consolas",
-          textDecoration: "none",
-        }}
-        href="/create"
-      >
-        + Create
-      </a>
+      {props.url?.pathname.startsWith("/create") ? null : (
+        <a
+          class={(props.url?.pathname === "/create" ? "selected " : "") +
+            "create-button"}
+          style={{
+            fontFamily: "Consolas",
+            textDecoration: "none",
+          }}
+          href="/create"
+        >
+          + Create
+        </a>
+      )}
     </div>
   );
 }

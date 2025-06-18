@@ -128,16 +128,39 @@ label {
   margin-left: 100px;
 }
 
+.tag-item {
+  width: auto;
+  height: 16px;
+  border-radius: 16px;
+  color: white;
+  font-size: 0.75em;
+  box-sizing: border-box;
+  padding: 10px 8px;
+  background-color: #444;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.tag-item:hover {
+  background-color: #08d;
+}
+
+.highlighted {
+  background-color: #00bb;
+}
+
 .selected {
-  color: red;
+  color: #00bb;
   font-weight: bold;
 }
 
 .create-button {
-  padding: 2px 8px;
+  padding: 4px 10px;
   background-color: #333;
   color: white;
+  border-color: transparent;
   border-radius: 4px;
+  font-size: 0.9em;
 }
 
 .create-button.selected {

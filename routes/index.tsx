@@ -33,21 +33,32 @@ export default function Home(props: PageProps<ArticleRow[]>) {
   const tag = props.url.searchParams.get("tag");
   const query = props.url.searchParams.get("query");
 
-  const headlineText = ym
-    ? `${ym} の記事`
+  const headline = ym
+    ? <p style={{ fontWeight: "bold" }}>{ym} の記事</p>
     : tag
-    ? `#${tag} がついた記事`
+    ? (
+      <p>
+        <span style={{ fontWeight: "bold", color: "#00bb" }}>#{tag}</span>{" "}
+        がついた記事
+      </p>
+    )
     : query
-    ? `"${query}"を含む記事`
-    : "";
+    ? (
+      <p>
+        <span style={{ fontWeight: "bold" }}>{query}</span> を含む記事
+      </p>
+    )
+    : null;
 
   return (
     <div class="fl-row">
       <div class="fl-col" style={{ gap: "2rem" }}>
-        {headlineText !== ""
+        {headline
           ? (
             <div class="fl-row jc-center">
-              <p style={{ fontWeight: "bold", flexGrow: 1 }}>{headlineText}</p>
+              <div style={{ flexGrow: 1 }}>
+                {headline}
+              </div>
               <a style={{ color: "#777", fontSize: "0.9em" }} href="/">
                 一覧に戻る
               </a>
@@ -57,8 +68,13 @@ export default function Home(props: PageProps<ArticleRow[]>) {
         <div class="fl-col articles-root" style={{ gap: "3rem" }}>
           {props.data.length > 0
             ? props.data.map((article, i) => (
-              <div class="fl-col" style={{ gap: "24px" }}>
-                <ArticleItem key={i} article={article} id={article.id} />
+              <div class="fl-col" style={{ gap: "32px" }}>
+                <ArticleItem
+                  key={i}
+                  article={article}
+                  id={article.id}
+                  highlightTag={tag ?? undefined}
+                />
                 <div
                   class="fl-row w100"
                   style={{

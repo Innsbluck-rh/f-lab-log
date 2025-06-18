@@ -1,20 +1,10 @@
-export function TagItem(props: { text: string }) {
+export function TagItem(props: { text: string; highlighted: boolean }) {
   if (props.text === "") return null;
   return (
     <div
-      class="fl-row ai-center jc-center"
-      style={{
-        width: "auto",
-        height: "16px",
-        borderRadius: "16px",
-        backgroundColor: "#444",
-        color: "white",
-        fontSize: "0.75em",
-        boxSizing: "border-box",
-        padding: "10px 8px",
-        cursor: "pointer",
-        pointerEvents: "all",
-      }}
+      class={`fl-row ai-center jc-center tag-item${
+        props.highlighted ? " highlighted" : ""
+      }`}
       onClick={() => {
         location.href = `/?tag=${props.text}`;
       }}

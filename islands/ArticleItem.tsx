@@ -3,7 +3,7 @@ import { TagItem } from "../components/TagItem.tsx";
 import { Article } from "../models/Article.ts";
 
 export function ArticleItem(
-  props: { article?: Article; id?: string },
+  props: { article?: Article; id?: string; highlightTag?: string },
 ) {
   const article = props.article;
   if (!article) {
@@ -11,13 +11,13 @@ export function ArticleItem(
   }
 
   return (
-    <div class="fl-col" style={{ position: "relative", gap: "8px" }}>
+    <div class="fl-col" style={{ position: "relative" }}>
       {/* <p>{props.article.id}</p> */}
-      <h1 style={{ fontSize: "1.5em" }}>
+      <h1 style={{ fontSize: "1.5em", marginBottom: "4px" }}>
         {/* {article.date}・{article.title} */}
         {article.date.replaceAll("-", "/")}
       </h1>
-      <p style={{ fontSize: "0.9em", color: "#555" }}>
+      <p style={{ fontSize: "0.9em", color: "#555", marginBottom: "10px" }}>
         {article.in_time} ⇀ {article.out_time}
       </p>
 
@@ -25,28 +25,21 @@ export function ArticleItem(
         <MarkdownText rawMarkdownStr={article.content} />
       </div>
 
-      {
-        /* <div
-        class="fl-row w100"
-        style={{ justifyContent: "right" }}
-      >
-        <div
-          class="fl-row"
-          style={{ width: "200px", height: "1px", backgroundColor: "#DDD" }}
-        >
-        </div>
-      </div> */
-      }
-
       <div class="fl-row ai-center">
-        <p>tags:</p>
+        {/* <p>tags:</p> */}
         <div
           class="fl-row"
-          style={{ marginLeft: "12px", gap: "16px", flexGrow: 1 }}
+          style={{ gap: "12px", flexGrow: 1 }}
         >
           {article.tags !== ""
             ? article.tags.split(",").map((tag: string, i: number) => {
-              return <TagItem key={i} text={tag} />;
+              return (
+                <TagItem
+                  key={i}
+                  text={tag}
+                  highlighted={tag === props.highlightTag}
+                />
+              );
             })
             : (
               <p
