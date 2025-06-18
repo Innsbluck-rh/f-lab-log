@@ -52,6 +52,16 @@ export function NavBar(props: { url?: URL }) {
           + Create
         </a>
       )}
+
+      <a href="https://github.com/Innsbluck-rh/f-lab-log" target="_blank">
+        <img
+          src="/github-mark.svg"
+          style={{
+            width: "20px",
+            height: "auto",
+          }}
+        />
+      </a>
     </div>
   );
 }

@@ -115,6 +115,12 @@ export default function ArticleForm(props: {
         onSubmit={handleSubmit}
         style={{ gap: "8px" }}
       >
+        <h2 style={{ marginBottom: "12px" }}>
+          {props.isEdit
+            ? `「${props.defaultValue?.title ?? "―"}」を編集`
+            : `新規記事作成`}
+        </h2>
+
         <div class="fl-row">
           <label htmlFor="date">
             DATE

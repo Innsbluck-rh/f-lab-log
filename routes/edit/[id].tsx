@@ -17,10 +17,5 @@ export const handler: Handlers<Article> = {
 export default function Edit(props: PageProps<Article>) {
   const { id } = props.params;
 
-  return (
-    <div class="page-root">
-      <h2>Edit 「{props.data.title}」</h2>
-      <EditForm id={id} defaultValue={props.data} />
-    </div>
-  );
+  return <EditForm id={id} defaultValue={props.data} />;
 }
