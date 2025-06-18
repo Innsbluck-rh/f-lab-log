@@ -1,9 +1,9 @@
 import { MarkdownText } from "../components/MarkdownText.tsx";
 import { TagItem } from "../components/TagItem.tsx";
-import { Article, ArticleRow } from "../models/Article.ts";
+import { Article } from "../models/Article.ts";
 
 export function ArticleItem(
-  props: { article?: ArticleRow | Article; preview?: boolean },
+  props: { article?: Article; id?: string },
 ) {
   const article = props.article;
   if (!article) {
@@ -73,11 +73,11 @@ export function ArticleItem(
           right: "12px",
           top: 0,
           gap: "12px",
-          visibility: props.preview ? "collapse" : "visible",
+          visibility: props.id ? "collapse" : "visible",
         }}
       >
         <a
-          href={`/edit/${(article as ArticleRow).id}`}
+          href={`/edit/${props.id}`}
           style={{ fontSize: "0.75em", color: "gray" }}
         >
           EDIT
@@ -88,7 +88,7 @@ export function ArticleItem(
           onClick={async (e) => {
             e.preventDefault();
 
-            const res = await fetch(`/api/log/${(article as ArticleRow).id}`, {
+            const res = await fetch(`/api/log/${props.id}`, {
               method: "DELETE",
               body: JSON.stringify({}),
             });

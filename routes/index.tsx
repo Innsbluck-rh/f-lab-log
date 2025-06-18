@@ -58,7 +58,7 @@ export default function Home(props: PageProps<ArticleRow[]>) {
           {props.data.length > 0
             ? props.data.map((article, i) => (
               <div class="fl-col" style={{ gap: "24px" }}>
-                <ArticleItem key={i} article={article} />
+                <ArticleItem key={i} article={article} id={article.id} />
                 <div
                   class="fl-row w100"
                   style={{

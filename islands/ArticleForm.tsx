@@ -91,7 +91,7 @@ export default function ArticleForm(props: {
     <div class="fl-row">
       <div class="fl-col form-root" style={{ gap: "1rem" }}>
         <p style={{ fontWeight: "bold" }}>PREVIEW</p>
-        <ArticleItem article={article.value} preview />
+        <ArticleItem article={article.value} />
       </div>
 
       <form
@@ -186,8 +186,8 @@ export default function ArticleForm(props: {
               if (e.key == "Tab") {
                 e.preventDefault();
                 const input = e.currentTarget;
-                var start = input.selectionStart;
-                var end = input.selectionEnd;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
 
                 // set textarea value to: text before caret + tab + text after caret
                 input.value = input.value.substring(0, start) +
