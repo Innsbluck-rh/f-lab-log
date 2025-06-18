@@ -1,3 +1,4 @@
+import { useSignal } from "@preact/signals";
 import { MarkdownText } from "../components/MarkdownText.tsx";
 import { TagItem } from "../components/TagItem.tsx";
 import { Article } from "../models/Article.ts";
@@ -5,6 +6,8 @@ import { Article } from "../models/Article.ts";
 export function ArticleItem(
   props: { article?: Article; id?: string; highlightTag?: string },
 ) {
+  const isIDShown = useSignal(false);
+
   const article = props.article;
   if (!article) {
     return <p>(error)</p>;
@@ -100,7 +103,17 @@ export function ArticleItem(
           visibility: props.id ? "visible" : "collapse",
         }}
       >
-        <p style={{ fontSize: "0.5em", color: "#DDD" }}>ID: {props.id}</p>
+        <p
+          onPointerEnter={(e) => isIDShown.value = true}
+          onPointerOut={(e) => isIDShown.value = false}
+          style={{
+            fontSize: "0.5em",
+            color: "#DDD",
+            opacity: isIDShown.value ? 1 : 0,
+          }}
+        >
+          ID: {props.id}
+        </p>
 
         <div
           class="fl-row w100"

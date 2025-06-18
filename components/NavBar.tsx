@@ -8,14 +8,15 @@ export function NavBar(props: { url?: URL }) {
         style={{
           fontFamily: "Consolas",
           fontSize: "24px",
-          color: "inherit",
+          // color: props.url?.pathname === "/" ? "#00BB" : "inherit",
           textDecoration: "none",
         }}
         href="/"
       >
         Fujimi_Log
       </a>
-      <a
+      {
+        /* <a
         class={props.url?.pathname === "/" ? "selected" : ""}
         style={{
           fontFamily: "Consolas",
@@ -24,7 +25,8 @@ export function NavBar(props: { url?: URL }) {
         href="/"
       >
         Home
-      </a>
+      </a> */
+      }
       <div style={{ flexGrow: 1 }} />
       {props.url?.pathname.startsWith("/edit")
         ? (
@@ -39,11 +41,13 @@ export function NavBar(props: { url?: URL }) {
           </a>
         )
         : null}
+
       {props.url?.pathname.startsWith("/create") ? null : (
         <a
           class={(props.url?.pathname === "/create" ? "selected " : "") +
             "create-button"}
           style={{
+            whiteSpace: "nowrap",
             fontFamily: "Consolas",
             textDecoration: "none",
           }}
