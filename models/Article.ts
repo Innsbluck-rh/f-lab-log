@@ -2,8 +2,8 @@ export interface Article {
   createdAt: number;
   updatedAt?: number;
   date: string;
-  in_time: string;
-  out_time: string;
+  in_time?: string;
+  out_time?: string;
   author: string;
   title: string;
   content: string;

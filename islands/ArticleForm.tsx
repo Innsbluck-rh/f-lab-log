@@ -21,7 +21,10 @@ export default function ArticleForm(props: {
   const defaultArticle = props.defaultValue ?? getDefaultArticle();
   const article = useSignal<Article | undefined>(defaultArticle);
 
+  const isTimeEnabled = useSignal(true);
+
   const toFormattedTime = (timeStr: string) => {
+    if (!isTimeEnabled.value) return "";
     const validRegex = /^[\d|:]+$/;
     const onlyNumRegex = /^\d+$/;
     if (!validRegex.test(timeStr)) return "  :  ";
@@ -72,6 +75,11 @@ export default function ArticleForm(props: {
     if (!article) return;
 
     article = Object.assign(defaultArticle, article);
+
+    if (isTimeEnabled) {
+      article.in_time = undefined;
+      article.out_time = undefined;
+    }
 
     const result = await props.onArticleSubmit?.(article);
     status.value = result ? "submitted" : "error";
@@ -148,34 +156,50 @@ export default function ArticleForm(props: {
         </div>
 
         <div class="fl-row">
-          <label htmlFor="in_time">
+          <label htmlFor="time_enabled">
             TIME
           </label>
           <input
-            name="in_time"
-            type="text"
-            autoComplete="off"
-            defaultValue={article.peek()?.in_time}
-            onInput={() => handleChange()}
-            onBlur={(e) => {
-              e.currentTarget.value = toFormattedTime(e.currentTarget.value);
+            type="checkbox"
+            name="time_enabled"
+            defaultChecked={isTimeEnabled.peek()}
+            onChange={(e) => {
+              isTimeEnabled.value = e.currentTarget.checked;
             }}
-            required={isRequiredField("in_time")}
-            style={{ width: "50px" }}
+            style={{ marginRight: "16px" }}
           />
-          <p style={{ marginLeft: "4px", marginRight: "4px" }}>～</p>
-          <input
-            name="out_time"
-            type="text"
-            autoComplete="off"
-            defaultValue={article.peek()?.out_time}
-            onInput={() => handleChange()}
-            onBlur={(e) => {
-              e.currentTarget.value = toFormattedTime(e.currentTarget.value);
-            }}
-            required={isRequiredField("out_time")}
-            style={{ width: "50px" }}
-          />
+          <div
+            class="fl-row"
+            style={{ opacity: isTimeEnabled.value ? 1 : 0.5 }}
+          >
+            <input
+              name="in_time"
+              type="text"
+              autoComplete="off"
+              disabled={!isTimeEnabled.value}
+              defaultValue={isTimeEnabled.value ? article.peek()?.in_time : ""}
+              onInput={() => handleChange()}
+              onBlur={(e) => {
+                e.currentTarget.value = toFormattedTime(e.currentTarget.value);
+              }}
+              required={isRequiredField("in_time")}
+              style={{ width: "50px" }}
+            />
+            <p style={{ marginLeft: "4px", marginRight: "4px" }}>～</p>
+            <input
+              name="out_time"
+              type="text"
+              autoComplete="off"
+              disabled={!isTimeEnabled.value}
+              defaultValue={isTimeEnabled.value ? article.peek()?.out_time : ""}
+              onInput={() => handleChange()}
+              onBlur={(e) => {
+                e.currentTarget.value = toFormattedTime(e.currentTarget.value);
+              }}
+              required={isRequiredField("out_time")}
+              style={{ width: "50px" }}
+            />
+          </div>
         </div>
 
         <div class="fl-col">

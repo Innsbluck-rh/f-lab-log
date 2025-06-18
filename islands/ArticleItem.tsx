@@ -13,13 +13,25 @@ export function ArticleItem(
   return (
     <div class="fl-col" style={{ position: "relative" }}>
       {/* <p>{props.article.id}</p> */}
-      <h1 style={{ fontSize: "1.5em", marginBottom: "4px" }}>
-        {/* {article.date}・{article.title} */}
-        {article.date.replaceAll("-", "/")}
-      </h1>
-      <p style={{ fontSize: "0.9em", color: "#555", marginBottom: "10px" }}>
-        {article.in_time} ⇀ {article.out_time}
-      </p>
+      <h2 style={{ marginBottom: "4px" }}>
+        {article.title}
+      </h2>
+      <div class="fl-row">
+        <p style={{ fontSize: "0.80em", whiteSpace: "pre" }}>
+          {/* {article.date}・{article.title} */}
+          {article.date.replaceAll("-", "/")}
+          {" ・ "}
+        </p>
+        {article.in_time || article.out_time
+          ? (
+            <p
+              style={{ fontSize: "0.80em", color: "#555" }}
+            >
+              {article.in_time} ⇀ {article.out_time}
+            </p>
+          )
+          : null}
+      </div>
 
       <div
         style={{
