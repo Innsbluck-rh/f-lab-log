@@ -1,4 +1,6 @@
 export interface Article {
+  createdAt: number;
+  updatedAt?: number;
   date: string;
   in_time: string;
   out_time: string;
@@ -10,6 +12,7 @@ export interface Article {
 
 export function getDefaultArticle(): Article {
   const nowDate = new Date();
+  const defaultCreatedAt = Date.now();
   const defaultDateStr = nowDate.toLocaleDateString("sv-SE").replaceAll(
     "/",
     "-",
@@ -20,6 +23,8 @@ export function getDefaultArticle(): Article {
   const defaultOutTimeStr = "17:20";
 
   return {
+    createdAt: defaultCreatedAt,
+    updatedAt: undefined,
     date: defaultDateStr,
     title: defaultTitleStr,
     author: defaultAuthorStr,
@@ -34,8 +39,9 @@ export interface ArticleRow extends Article {
   id: string;
 }
 
-export const requiredFields = [
+export const requiredFields: string[] = [
   // "id",
+  // "createdAt",
   "date",
   "author",
   // "in_time",
@@ -47,6 +53,7 @@ export const requiredFields = [
 
 export const queryableFields = [
   // "id",
+  // "createdAt",
   "date",
   "author",
   "in_time",

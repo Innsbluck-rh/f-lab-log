@@ -21,7 +21,14 @@ export function ArticleItem(
         {article.in_time} ⇀ {article.out_time}
       </p>
 
-      <div style={{ marginTop: "16px", marginBottom: "32px" }}>
+      <div
+        style={{
+          marginTop: "16px",
+          marginBottom: "32px",
+          paddingLeft: "4px",
+          // paddingRight: "8px",
+        }}
+      >
         <MarkdownText rawMarkdownStr={article.content} />
       </div>
 
@@ -44,52 +51,74 @@ export function ArticleItem(
             : (
               <p
                 style={{
-                  fontSize: "0.7em",
+                  fontSize: "0.5em",
                   // fontStyle: "italic",
                   fontFamily: "Consolas",
-                  color: "#AAA",
+                  color: "#CCC",
                 }}
               >
                 (No Tags)
               </p>
             )}
         </div>
-        <p style={{ fontSize: "0.75em", color: "gray" }}>
-          author: {article.author}
-        </p>
+        <div class="fl-col" style={{ marginRight: "4px" }}>
+          <p style={{ textAlign: "end", fontSize: "0.5em", color: "#DDD" }}>
+            {article.author}
+            {" ・ "}
+            {new Date(article.createdAt).toLocaleString("ja-JP")}
+          </p>
+          {article.updatedAt
+            ? (
+              <p style={{ textAlign: "end", fontSize: "0.5em", color: "#DDD" }}>
+                最終更新: {new Date(article.updatedAt).toLocaleString(
+                  "ja-JP",
+                )}
+              </p>
+            )
+            : null}
+        </div>
       </div>
 
       <div
-        class="fl-row"
+        class="fl-col"
         style={{
           position: "absolute",
-          right: "12px",
+          right: "4px",
           top: 0,
-          gap: "12px",
           visibility: props.id ? "visible" : "collapse",
         }}
       >
-        <a
-          href={`/edit/${props.id}`}
-          style={{ fontSize: "0.75em", color: "gray" }}
-        >
-          EDIT
-        </a>
-        <a
-          style={{ fontSize: "0.75em", color: "red", pointerEvents: "all" }}
-          href="#"
-          onClick={async (e) => {
-            e.preventDefault();
+        <p style={{ fontSize: "0.5em", color: "#DDD" }}>ID: {props.id}</p>
 
-            const res = await fetch(`/api/log/${props.id}`, {
-              method: "DELETE",
-              body: JSON.stringify({}),
-            });
-            if (res.ok) location.reload();
+        <div
+          class="fl-row w100"
+          style={{
+            gap: "12px",
+            justifyContent: "right",
           }}
         >
-          DELETE
-        </a>
+          <a
+            href={`/edit/${props.id}`}
+            style={{ fontSize: "0.75em", color: "gray" }}
+          >
+            EDIT
+          </a>
+          <a
+            style={{ fontSize: "0.75em", color: "red", pointerEvents: "all" }}
+            href="#"
+            onClick={async (e) => {
+              e.preventDefault();
+
+              const res = await fetch(`/api/log/${props.id}`, {
+                method: "DELETE",
+                body: JSON.stringify({}),
+              });
+              if (res.ok) location.reload();
+            }}
+          >
+            DELETE
+          </a>
+        </div>
       </div>
     </div>
   );

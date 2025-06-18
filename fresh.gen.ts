@@ -6,8 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_log_id_ from "./routes/api/log/[id].ts";
 import * as $api_log_add from "./routes/api/log/add.ts";
-import * as $api_log_aggregate_year_month_index from "./routes/api/log/aggregate/[year]/[month]/index.ts";
-import * as $api_log_aggregate_year_index from "./routes/api/log/aggregate/[year]/index.ts";
 import * as $api_log_edit from "./routes/api/log/edit.ts";
 import * as $api_log_index from "./routes/api/log/index.ts";
 import * as $api_log_monthly_counts from "./routes/api/log/monthly_counts.ts";
@@ -21,6 +19,8 @@ import * as $ArticlesSideContent from "./islands/ArticlesSideContent.tsx";
 import * as $CreateForm from "./islands/CreateForm.tsx";
 import * as $EditForm from "./islands/EditForm.tsx";
 import * as $SearchQueryForm from "./islands/SearchQueryForm.tsx";
+import * as $SortDropdown from "./islands/SortDropdown.tsx";
+import * as $SortOrderToggle from "./islands/SortOrderToggle.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -29,9 +29,6 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/api/log/[id].ts": $api_log_id_,
     "./routes/api/log/add.ts": $api_log_add,
-    "./routes/api/log/aggregate/[year]/[month]/index.ts":
-      $api_log_aggregate_year_month_index,
-    "./routes/api/log/aggregate/[year]/index.ts": $api_log_aggregate_year_index,
     "./routes/api/log/edit.ts": $api_log_edit,
     "./routes/api/log/index.ts": $api_log_index,
     "./routes/api/log/monthly_counts.ts": $api_log_monthly_counts,
@@ -47,6 +44,8 @@ const manifest = {
     "./islands/CreateForm.tsx": $CreateForm,
     "./islands/EditForm.tsx": $EditForm,
     "./islands/SearchQueryForm.tsx": $SearchQueryForm,
+    "./islands/SortDropdown.tsx": $SortDropdown,
+    "./islands/SortOrderToggle.tsx": $SortOrderToggle,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

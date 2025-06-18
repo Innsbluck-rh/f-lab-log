@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getMonthlyCounts } from "../../../lib/db.ts";
+import { getMonthlyCounts } from "../../../lib/logs.ts";
 
 export const handler: Handlers = {
   async GET(_req) {

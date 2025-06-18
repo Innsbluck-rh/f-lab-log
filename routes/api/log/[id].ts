@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { deleteLog, editLog, getLog } from "../../../lib/db.ts";
+import { deleteLog, editLog, getLog } from "../../../lib/logs.ts";
 import { Article, isArticleValid } from "../../../models/Article.ts";
 
 export const handler: Handlers = {

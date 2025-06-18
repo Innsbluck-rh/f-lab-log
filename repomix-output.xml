@@ -53,7 +53,7 @@ dev.ts
 fresh.config.ts
 fresh.gen.ts
 islands/CreateForm.tsx
-lib/db.ts
+lib/logs.ts
 main.ts
 models/Article.ts
 README.md
@@ -251,8 +251,8 @@ export default function CreateForm() {
 }
 </file>
 
-<file path="lib/db.ts">
-// lib/db.ts
+<file path="lib/logs.ts">
+// lib/logs.ts
 import { DB } from "https://deno.land/x/sqlite/mod.ts";
 
 const db = new DB("data/logs.sqlite");
@@ -399,7 +399,7 @@ export const handler = (_req: Request, _ctx: FreshContext): Response => {
 <file path="routes/api/logs.ts">
 // routes/api/logs.ts
 import { Handlers } from "$fresh/server.ts";
-import { getLogs, insertLog } from "../../lib/db.ts";
+import { getLogs, insertLog } from "../../lib/logs.ts";
 
 export const handler: Handlers = {
   GET(_req) {
@@ -437,7 +437,7 @@ export default function Greet() {
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { ArticleItem } from "../components/ArticleItem.tsx";
 import Article from "../models/Article.ts";
-import { getLogs } from "../lib/db.ts";
+import { getLogs } from "../lib/logs.ts";
 
 export const handler: Handlers<Article[]> = {
   GET(_req, ctx) {

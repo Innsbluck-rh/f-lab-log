@@ -1,6 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import EditForm from "../../islands/EditForm.tsx";
-import { getLog } from "../../lib/db.ts";
+import { getLog } from "../../lib/logs.ts";
 import { Article } from "../../models/Article.ts";
 
 export const handler: Handlers<Article> = {

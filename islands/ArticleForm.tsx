@@ -19,9 +19,7 @@ export default function ArticleForm(props: {
 
   const status = useSignal("idle");
   const defaultArticle = props.defaultValue ?? getDefaultArticle();
-  const article = useSignal<Article>(
-    defaultArticle,
-  );
+  const article = useSignal<Article | undefined>(defaultArticle);
 
   const toFormattedTime = (timeStr: string) => {
     const validRegex = /^[\d|:]+$/;
@@ -53,16 +51,27 @@ export default function ArticleForm(props: {
       minuteNum.toString().padStart(2, "0");
   };
 
-  async function handleSubmit(e: Event) {
-    if (!formEl) return;
-    e.preventDefault();
+  const getCurrentArticle = (): Article | undefined => {
+    if (!formEl) return undefined;
     const formData = new FormData(formEl);
-    const article = Object.assign(
-      defaultArticle,
-      Object.fromEntries(
-        formData.entries(),
-      ) as unknown as Article,
-    );
+    const articleObj = Object.fromEntries(
+      formData.entries(),
+    ) as unknown as Article;
+    if (props.isEdit) {
+      articleObj.createdAt = article.value?.createdAt ?? 0;
+      articleObj.updatedAt = Date.now();
+    } else {
+      articleObj.createdAt = Date.now();
+    }
+    return articleObj;
+  };
+
+  async function handleSubmit(e: Event) {
+    e.preventDefault();
+    let article = getCurrentArticle();
+    if (!article) return;
+
+    article = Object.assign(defaultArticle, article);
 
     const result = await props.onArticleSubmit?.(article);
     status.value = result ? "submitted" : "error";
@@ -72,7 +81,7 @@ export default function ArticleForm(props: {
           location.replace("/");
           break;
         case "reset":
-          formEl.reset();
+          formEl?.reset();
           break;
         case "nothing":
           break;
@@ -81,11 +90,8 @@ export default function ArticleForm(props: {
   }
 
   function handleChange() {
-    if (!formEl) return;
-    const formData = new FormData(formEl);
-    article.value = Object.fromEntries(
-      formData.entries(),
-    ) as unknown as Article;
+    const currentArticle = getCurrentArticle();
+    article.value = currentArticle;
   }
 
   return (
@@ -109,7 +115,7 @@ export default function ArticleForm(props: {
             name="date"
             type="date"
             autoComplete="off"
-            defaultValue={article.peek().date}
+            defaultValue={article.peek()?.date}
             onInput={() => handleChange()}
             required={isRequiredField("date")}
           />
@@ -122,7 +128,7 @@ export default function ArticleForm(props: {
           <input
             name="author"
             type="text"
-            defaultValue={article.peek().author}
+            defaultValue={article.peek()?.author}
             onInput={() => handleChange()}
             required={isRequiredField("author")}
           />
@@ -135,7 +141,7 @@ export default function ArticleForm(props: {
           <input
             name="title"
             type="text"
-            defaultValue={article.peek().title}
+            defaultValue={article.peek()?.title}
             onInput={() => handleChange()}
             required={isRequiredField("title")}
           />
@@ -149,7 +155,7 @@ export default function ArticleForm(props: {
             name="in_time"
             type="text"
             autoComplete="off"
-            defaultValue={article.peek().in_time}
+            defaultValue={article.peek()?.in_time}
             onInput={() => handleChange()}
             onBlur={(e) => {
               e.currentTarget.value = toFormattedTime(e.currentTarget.value);
@@ -162,7 +168,7 @@ export default function ArticleForm(props: {
             name="out_time"
             type="text"
             autoComplete="off"
-            defaultValue={article.peek().out_time}
+            defaultValue={article.peek()?.out_time}
             onInput={() => handleChange()}
             onBlur={(e) => {
               e.currentTarget.value = toFormattedTime(e.currentTarget.value);
@@ -181,7 +187,7 @@ export default function ArticleForm(props: {
             type="text"
             autoComplete="off"
             style={{ height: "200px", resize: "vertical" }}
-            defaultValue={article.peek().content}
+            defaultValue={article.peek()?.content}
             onInput={() => handleChange()}
             onKeyDown={(e) => {
               if (e.key == "Tab") {
@@ -202,7 +208,7 @@ export default function ArticleForm(props: {
             }}
             required={isRequiredField("content")}
           >
-            {article.peek().content}
+            {article.peek()?.content}
           </textarea>
         </div>
 
@@ -214,7 +220,7 @@ export default function ArticleForm(props: {
             name="tags"
             type="text"
             autoComplete="off"
-            defaultValue={article.peek().tags}
+            defaultValue={article.peek()?.tags}
             onInput={(e) => {
               handleChange();
             }}

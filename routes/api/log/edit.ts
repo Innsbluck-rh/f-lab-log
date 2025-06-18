@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { insertLog } from "../../../lib/db.ts";
+import { insertLog } from "../../../lib/logs.ts";
 import { Article, isArticleValid } from "../../../models/Article.ts";
 
 export const handler: Handlers = {
