@@ -73,7 +73,7 @@ export function ArticleItem(
           right: "12px",
           top: 0,
           gap: "12px",
-          visibility: props.id ? "collapse" : "visible",
+          visibility: props.id ? "visible" : "collapse",
         }}
       >
         <a
