@@ -4,11 +4,11 @@
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)",
-    "start": "deno run -A --unstable-sloppy-imports --unstable-node-globals --unstable-bare-node-builtins --watch=static/,routes/ --env-file dev.ts",
-    "build": "deno run -A --env-file --unstable-sloppy-imports --unstable-node-globals --unstable-bare-node-builtins dev.ts build",
-    "preview": "deno run -A main.ts",
-    "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "initdb": "deno run -A tools/init_db.ts"
+    "start": "deno run -A --unstable-kv --watch=static/,routes/ --env-file dev.ts",
+    "build": "deno run -A --unstable-kv --env-file dev.ts build",
+    "preview": "deno run -A --env-file main.ts",
+    "update": "deno run -A --env-file -r https://fresh.deno.dev/update .",
+    "resetkv": "deno run -A --env-file --unstable-kv --env-file tools/reset_kv.ts"
   },
   "lint": {
     "rules": {

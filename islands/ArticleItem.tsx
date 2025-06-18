@@ -1,9 +1,9 @@
 import { MarkdownText } from "../components/MarkdownText.tsx";
 import { TagItem } from "../components/TagItem.tsx";
-import { ArticleRow } from "../models/Article.ts";
+import { Article, ArticleRow } from "../models/Article.ts";
 
 export function ArticleItem(
-  props: { article?: ArticleRow; preview?: boolean },
+  props: { article?: ArticleRow | Article; preview?: boolean },
 ) {
   const article = props.article;
   if (!article) {
@@ -45,7 +45,7 @@ export function ArticleItem(
           style={{ marginLeft: "12px", gap: "16px", flexGrow: 1 }}
         >
           {article.tags !== ""
-            ? article.tags.split(",").map((tag, i) => {
+            ? article.tags.split(",").map((tag: string, i: number) => {
               return <TagItem key={i} text={tag} />;
             })
             : (
@@ -77,7 +77,7 @@ export function ArticleItem(
         }}
       >
         <a
-          href={`/edit/${article.id}`}
+          href={`/edit/${(article as ArticleRow).id}`}
           style={{ fontSize: "0.75em", color: "gray" }}
         >
           EDIT
@@ -88,7 +88,7 @@ export function ArticleItem(
           onClick={async (e) => {
             e.preventDefault();
 
-            const res = await fetch(`/api/log/${article.id}`, {
+            const res = await fetch(`/api/log/${(article as ArticleRow).id}`, {
               method: "DELETE",
               body: JSON.stringify({}),
             });

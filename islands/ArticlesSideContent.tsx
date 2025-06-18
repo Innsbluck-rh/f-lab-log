@@ -1,18 +1,12 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { SearchQueryForm } from "./SearchQueryForm.tsx";
-import { PageProps } from "$fresh/server.ts";
-
-export interface MonthlyCount {
-  ym: string;
-  count: number;
-}
 
 export function ArticlesSideContent(props: {
   tag?: string;
   query?: string;
 }) {
-  const monthlyCounts = useSignal<MonthlyCount[]>([]);
+  const monthlyCounts = useSignal<{ [ym: string]: number }>({});
 
   const fetchMonthlyCount = async () => {
     const res = await fetch("/api/log/monthly_counts", {
@@ -40,7 +34,7 @@ export function ArticlesSideContent(props: {
       {!props.tag ? <SearchQueryForm query={props.query ?? ""} /> : null}
 
       <div class="fl-col">
-        {monthlyCounts.value.map((count) => {
+        {Object.entries(monthlyCounts.value).map(([ym, count]) => {
           return (
             <a
               style={{
@@ -48,9 +42,9 @@ export function ArticlesSideContent(props: {
                 fontFamily: "Consolas",
                 color: "gray",
               }}
-              href={`/?ym=${count.ym}`}
+              href={`/?ym=${ym}`}
             >
-              {count.ym} ({count.count})
+              {ym} ({count})
             </a>
           );
         })}

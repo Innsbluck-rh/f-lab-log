@@ -4,9 +4,9 @@ import { getLog } from "../../lib/db.ts";
 import { Article } from "../../models/Article.ts";
 
 export const handler: Handlers<Article> = {
-  GET(_req, ctx) {
+  async GET(_req, ctx) {
     const { id } = ctx.params;
-    const article = getLog(id);
+    const article = await getLog(id);
     if (!article) {
       return ctx.renderNotFound(undefined);
     }

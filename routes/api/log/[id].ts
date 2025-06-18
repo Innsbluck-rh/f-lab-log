@@ -3,9 +3,9 @@ import { deleteLog, editLog, getLog } from "../../../lib/db.ts";
 import { Article, isArticleValid } from "../../../models/Article.ts";
 
 export const handler: Handlers = {
-  GET(_req, ctx) {
+  async GET(_req, ctx) {
     const { id } = ctx.params;
-    const article = getLog(id);
+    const article = await getLog(id);
     return new Response(JSON.stringify(article), {
       headers: { "Content-Type": "application/json" },
     });
@@ -20,9 +20,9 @@ export const handler: Handlers = {
     editLog(id, article);
     return new Response("OK", { status: 200 });
   },
-  DELETE(_req, ctx) {
+  async DELETE(_req, ctx) {
     const { id } = ctx.params;
-    const article = getLog(id);
+    const article = await getLog(id);
     if (!article) {
       return new Response("No Such Article", { status: 400 });
     }

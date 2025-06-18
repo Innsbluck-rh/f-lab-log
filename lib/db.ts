@@ -1,121 +1,103 @@
 // lib/db.ts
-import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
-import {
-  Article,
-  articleAsArray,
-  articleAsEntries,
-  articleFields,
-  ArticleRow,
-} from "../models/Article.ts";
+import { Article, ArticleRow, queryableFields } from "../models/Article.ts";
 
-const db = new DB("data/logs.sqlite");
+const kv = await Deno.openKv();
 
-function getDBFormattedArticle(log: Article): Article {
+export const uuid = () => crypto.randomUUID();
+
+const PREFIX_LOGS = "logs";
+
+function getArticleRow(log: Article): ArticleRow {
   if (log.tags !== "") {
     if (!log.tags.startsWith(",")) log.tags = `,${log.tags}`;
     if (!log.tags.endsWith(",")) log.tags = `${log.tags},`;
   }
 
-  return log;
+  return {
+    id: uuid(),
+    ...log,
+  };
 }
 
-function decodeDBFormattedArticle(log: Article): Article {
-  if (log.tags !== "") {
-    if (log.tags.startsWith(",")) {
-      log.tags = log.tags.substring(1);
-    }
-    if (log.tags.endsWith(",")) {
-      log.tags = log.tags.substring(0, log.tags.length - 1);
-    }
-  }
-
-  return log;
+export function parseYM(dateStr: string) {
+  const date = new Date(dateStr);
+  const ym = `${date.getFullYear().toString().padStart(4, "0")}-${
+    (date.getMonth() + 1).toString().padStart(2, "0")
+  }`;
+  return ym;
 }
 
 export function insertLog(article: Article) {
-  article = getDBFormattedArticle(article);
-  const empties = new Array(articleFields.length).fill("?");
-
-  db.exec(
-    `INSERT INTO logs (${articleFields.join(", ")}) VALUES (${
-      empties.join(", ")
-    })`,
-    ...articleAsArray(article),
-  );
+  const row = getArticleRow(article);
+  kv.set([PREFIX_LOGS, row.id], row);
 }
 
 export function editLog(id: string, article: Article) {
-  article = getDBFormattedArticle(article);
-  const updateStr = articleAsEntries(article).map(([key, value]) => {
-    return `${key} = '${value}'`;
-  }).join(", ");
-
-  db.exec(
-    `UPDATE logs SET ${updateStr} WHERE id = ${id}`,
-  );
+  kv.set([PREFIX_LOGS, id], article);
 }
 export function deleteLog(id: string) {
-  db.exec(
-    `DELETE FROM logs WHERE id = ${id}`,
-  );
+  kv.delete([PREFIX_LOGS, id]);
 }
 
-export function getLog(id: string): ArticleRow | undefined {
-  const entries = db.sql`SELECT * FROM logs WHERE id = ${id}`;
-  const log = entries.length > 0
-    ? entries[0] as unknown as ArticleRow
-    : undefined;
-
-  return log ? decodeDBFormattedArticle(log) : undefined;
+export async function getLog(id: string): Promise<ArticleRow | null> {
+  const kVRow = await kv.get<ArticleRow>([PREFIX_LOGS, id]);
+  return kVRow.value;
 }
 
-export function getLogs(query?: string, tagSearch?: boolean): ArticleRow[] {
-  if (query && tagSearch) query = `,${query},`;
-  const queryStr = query
-    ? `WHERE ${
-      articleFields.reduce<string[]>((accumulator, field) => {
-        const isProhibited = !tagSearch && field === "tags" &&
-          query.indexOf(",") !== -1; // コンマが含まれる場合はタグを含めない
-        if (!isProhibited) {
-          accumulator.push(`${field} LIKE '%${query}%'`);
-        }
-        return accumulator;
-      }, []).join(" OR ")
-    }`
-    : "";
+export async function getLogs(
+  query?: string,
+  tagSearch?: boolean,
+): Promise<ArticleRow[]> {
+  const isMatch = (article: Article): boolean => {
+    if (query) {
+      if (tagSearch) {
+        return article.tags.split(",").indexOf(query) !== -1;
+      } else {
+        const matched = Object.entries(article).some(([field, value]) => {
+          if (queryableFields.includes(field)) {
+            const q = field === "tags" ? `,${query},` : query;
+            return value.includes(q);
+          }
+        });
 
-  const entries = db.prepare(`SELECT * FROM logs ${queryStr} ORDER BY id DESC`)
-    .all();
-  return entries.map((entry) => {
-    return decodeDBFormattedArticle(entry as unknown as ArticleRow);
-  });
-}
+        return matched;
+      }
+    }
 
-export function aggregateBy(year: string, month?: string): ArticleRow[] {
-  let condition = "";
-  if (month) {
-    const ymStr = year.padStart(4, "0") + "-" + month.padStart(2, "0");
-    condition = `WHERE strftime('%Y-%m', date) = '${ymStr}'`;
-  } else {
-    const yStr = year.padStart(4, "0");
-    condition = `WHERE strftime('%Y', date) = '${yStr}'`;
+    return false;
+  };
+
+  const iter = kv.list<ArticleRow>({ prefix: [PREFIX_LOGS] });
+  const rows: ArticleRow[] = [];
+  for await (const res of iter) {
+    if (query && query !== "" && !isMatch(res.value)) continue;
+    rows.push(res.value);
   }
-  const entries = db.prepare(`SELECT * FROM logs ${condition}`).all();
 
-  return entries.map((entry) => {
-    return decodeDBFormattedArticle(entry as unknown as ArticleRow);
-  });
+  return rows;
 }
 
-export function getMonthlyCounts(): {
-  ym: string;
-  count: number;
-}[] {
-  const entries = db.sql<{
-    ym: string;
-    count: number;
-  }>`SELECT strftime('%Y-%m', date) AS ym, COUNT(date) AS count
-    FROM logs GROUP BY ym`;
+export async function aggregateBy(
+  year: string,
+  month?: string,
+): Promise<ArticleRow[]> {
+  const logs = await getLogs();
+  return logs.filter((row) => parseYM(row.date) === `${year}-${month}`);
+}
 
-  return entries;
+export async function getMonthlyCounts(): Promise<{ [ym: string]: number }> {
+  const counts: { [ym: string]: number } = {
+    // "2025-06": 3,
+  };
+
+  const logs = await getLogs();
+
+  logs.forEach((log) => {
+    const ym = parseYM(log.date);
+    if (counts[ym]) {
+      counts[ym]++;
+    } else counts[ym] = 1;
+  });
+
+  return counts;
 }

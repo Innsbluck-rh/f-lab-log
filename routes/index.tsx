@@ -6,7 +6,7 @@ import { SearchQueryForm } from "../islands/SearchQueryForm.tsx";
 import { ArticlesSideContent } from "../islands/ArticlesSideContent.tsx";
 
 export const handler: Handlers<ArticleRow[]> = {
-  GET(_req, ctx) {
+  async GET(_req, ctx) {
     const sp = ctx.url.searchParams;
     const ym = sp.get("ym");
     const tag = sp.get("tag");
@@ -15,14 +15,14 @@ export const handler: Handlers<ArticleRow[]> = {
     if (ym) {
       const splitted = ym.split("-");
       articles = splitted.length >= 2
-        ? aggregateBy(splitted[0], splitted[1])
-        : getLogs();
+        ? await aggregateBy(splitted[0], splitted[1])
+        : await getLogs();
     } else if (tag) {
-      articles = getLogs(tag, true);
+      articles = await getLogs(tag, true);
     } else if (query) {
-      articles = getLogs(query, false);
+      articles = await getLogs(query, false);
     } else {
-      articles = getLogs();
+      articles = await getLogs();
     }
     return ctx.render(articles);
   },
