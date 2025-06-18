@@ -8,7 +8,8 @@
     "build": "deno run -A --unstable-kv --env-file dev.ts build",
     "preview": "deno run -A --env-file main.ts",
     "update": "deno run -A --env-file -r https://fresh.deno.dev/update .",
-    "resetkv": "deno run -A --env-file --unstable-kv --env-file tools/reset_kv.ts"
+    "resetkv": "deno run -A --env-file --unstable-kv --env-file tools/reset_kv.ts",
+    "resetprodkv": "deno run -A --env-file --unstable-kv --env-file tools/reset_prod_kv.ts"
   },
   "lint": {
     "rules": {

@@ -187,7 +187,6 @@ export default function ArticleForm(props: {
             type="text"
             autoComplete="off"
             style={{ height: "200px", resize: "vertical" }}
-            defaultValue={article.peek()?.content}
             onInput={() => handleChange()}
             onKeyDown={(e) => {
               if (e.key == "Tab") {
