@@ -84,7 +84,7 @@ export default function Home(props: PageProps<ArticleRow[]>) {
     : null;
 
   return (
-    <div class="fl-row">
+    <div class="page-root">
       <div class="fl-col" style={{ gap: "2rem" }}>
         <div class="fl-row jc-center ai-center" style={{ gap: "8px" }}>
           <div style={{ flexGrow: 1 }}>

@@ -18,7 +18,8 @@ export default function Edit(props: PageProps<Article>) {
   const { id } = props.params;
 
   return (
-    <div class="fl-col">
+    <div class="page-root">
+      <h2>Edit 「{props.data.title}」</h2>
       <EditForm id={id} defaultValue={props.data} />
     </div>
   );

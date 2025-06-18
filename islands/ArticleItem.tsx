@@ -17,16 +17,16 @@ export function ArticleItem(
         {article.title}
       </h2>
       <div class="fl-row">
-        <p style={{ fontSize: "0.80em", whiteSpace: "pre" }}>
+        <p style={{ fontSize: "0.80em", color: "#555", whiteSpace: "pre" }}>
           {/* {article.date}・{article.title} */}
           {article.date.replaceAll("-", "/")}
-          {" ・ "}
         </p>
         {article.in_time || article.out_time
           ? (
             <p
-              style={{ fontSize: "0.80em", color: "#555" }}
+              style={{ fontSize: "0.80em", color: "#555", whiteSpace: "pre" }}
             >
+              {" ・ "}
               {article.in_time} ⇀ {article.out_time}
             </p>
           )

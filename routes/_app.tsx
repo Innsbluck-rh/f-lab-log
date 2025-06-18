@@ -14,12 +14,10 @@ export default function App(
         <link rel="stylesheet" href="/gfm.css" />
       </head>
       <body>
-        <div class="fl-col" style={{ padding: "32px" }}>
-          <NavBar url={url} />
-          <main>
-            <Component />
-          </main>
-        </div>
+        <NavBar url={url} />
+        <main>
+          <Component />
+        </main>
       </body>
     </html>
   );

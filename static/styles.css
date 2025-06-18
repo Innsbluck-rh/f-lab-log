@@ -67,6 +67,7 @@ body {
   min-height: 100svh;
   max-width: 1200px;
   flex-grow: 1;
+  padding: 36px;
   padding-bottom: 72px;
   background-color: #fff;
 }
@@ -76,6 +77,11 @@ main {
   flex-direction: column;
   padding: 36px;
   padding-top: 72px;
+}
+
+.page-root {
+  display: flex;
+  flex-direction: row;
 }
 
 label {
@@ -108,6 +114,11 @@ label {
 
 .jc-center {
   justify-content: center;
+}
+
+.article-form-root {
+  display: flex;
+  flex-direction: row;
 }
 
 .articles-root {
@@ -171,4 +182,53 @@ label {
 
 .create-button:hover {
   background-color: #555;
+}
+
+@media screen and (max-width: 960px) {
+  .page-root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  body {
+    width: 100vw;
+    padding: 16px;
+    gap: 16px;
+    margin: 0;
+  }
+
+  main {
+    width: 90vw;
+    padding: 4px;
+    margin: 0;
+  }
+
+  .articles-root {
+    width: 100%;
+  }
+
+  .articles-side {
+    width: 100%;
+    margin-top: 72px;
+    margin-bottom: 72px;
+    margin-left: 0px;
+  }
+
+  .article-form-root {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 60px;
+  }
+
+  .form-root {
+    width: 100%;
+  }
+
+  .form-side {
+    width: 100%;
+    margin-top: 36px;
+    margin-left: 0;
+  }
 }

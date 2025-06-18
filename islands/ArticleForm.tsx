@@ -103,7 +103,7 @@ export default function ArticleForm(props: {
   }
 
   return (
-    <div class="fl-row">
+    <div class="article-form-root">
       <div class="fl-col form-root" style={{ gap: "1rem" }}>
         <p style={{ fontWeight: "bold" }}>PREVIEW</p>
         <ArticleItem article={article.value} />
