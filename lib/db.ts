@@ -1,5 +1,5 @@
 // lib/db.ts
-import { Database } from "jsr:@db/sqlite@0.11";
+import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
 import {
   Article,
   articleAsArray,
@@ -7,9 +7,8 @@ import {
   articleFields,
   ArticleRow,
 } from "../models/Article.ts";
-const db = new Database("data/logs.sqlite");
-const [version] = db.prepare("select sqlite_version()").value<[string]>()!;
-console.log(version);
+
+const db = new DB("data/logs.sqlite");
 
 function getDBFormattedArticle(log: Article): Article {
   if (log.tags !== "") {
