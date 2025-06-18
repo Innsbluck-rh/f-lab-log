@@ -1,4 +1,5 @@
 export function TagItem(props: { text: string }) {
+  if (props.text === "") return null;
   return (
     <div
       class="fl-row ai-center jc-center"
