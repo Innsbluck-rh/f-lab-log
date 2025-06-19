@@ -1,15 +1,22 @@
 import { useEffect } from "preact/hooks";
 
+const debounce = <T extends (...args: any[]) => unknown>(
+  callback: T,
+  delay = 250,
+): (...args: Parameters<T>) => void => {
+  let timeoutId: number; // Node.jsの場合はNodeJS.Timeout型にする
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(...args), delay);
+  };
+};
+
 export function MarkdownText(
   props: { rawMarkdownStr: string },
 ) {
   let divEl: HTMLDivElement | null;
-  let isFetching = false;
 
-  const fetchRendered = async (content: string) => {
-    if (isFetching) return;
-    isFetching = true;
-
+  const fetchRendered = debounce(async (content: string) => {
     try {
       const res = await fetch("/api/markdown/render", {
         method: "POST",
@@ -23,10 +30,7 @@ export function MarkdownText(
     } catch (e: any) {
       // console.log(e);
     }
-    setTimeout(() => {
-      isFetching = false;
-    }, 1000);
-  };
+  }, 100);
 
   useEffect(() => {
     fetchRendered(props.rawMarkdownStr);

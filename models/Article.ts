@@ -17,7 +17,7 @@ export function getDefaultArticle(): Article {
     "/",
     "-",
   );
-  const defaultTitleStr = "日報";
+  const defaultTitleStr = `${defaultDateStr} 日報`;
   const defaultAuthorStr = "神野 修平";
   const defaultInTimeStr = "08:30";
   const defaultOutTimeStr = "17:20";

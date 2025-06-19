@@ -1,9 +1,7 @@
 export function Footer(props: {}) {
   return (
-    <div
-      class="w100 fl-col ai-center footer-root"
-    >
-      <p style={{ color: "#777", fontSize: "1.2em", marginBottom: "24px" }}>
+    <div class="w100 fl-col ai-center footer-root">
+      <p style={{ color: "#777", fontSize: "1.2em", marginBottom: "4px" }}>
         ・
       </p>
       <p style={{ color: "#777", fontSize: "1em" }}>© 2025</p>
