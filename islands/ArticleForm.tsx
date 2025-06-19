@@ -21,7 +21,9 @@ export default function ArticleForm(props: {
   const defaultArticle = props.defaultValue ?? getDefaultArticle();
   const article = useSignal<Article | undefined>(defaultArticle);
 
-  const isTimeEnabled = useSignal(true);
+  const isTimeEnabled = useSignal(
+    defaultArticle.in_time || defaultArticle.out_time ? true : false,
+  );
 
   const toFormattedTime = (timeStr: string) => {
     if (!isTimeEnabled.value) return "";
@@ -66,6 +68,7 @@ export default function ArticleForm(props: {
     } else {
       articleObj.createdAt = Date.now();
     }
+
     return articleObj;
   };
 
@@ -76,7 +79,7 @@ export default function ArticleForm(props: {
 
     article = Object.assign(defaultArticle, article);
 
-    if (isTimeEnabled) {
+    if (!isTimeEnabled.value) {
       article.in_time = undefined;
       article.out_time = undefined;
     }
@@ -171,6 +174,14 @@ export default function ArticleForm(props: {
             defaultChecked={isTimeEnabled.peek()}
             onChange={(e) => {
               isTimeEnabled.value = e.currentTarget.checked;
+              const a = article.peek();
+              if (e.currentTarget.checked && a) {
+                a.in_time = defaultArticle.in_time ??
+                  getDefaultArticle().in_time;
+                a.out_time = defaultArticle.out_time ??
+                  getDefaultArticle().out_time;
+                article.value = a;
+              }
             }}
             style={{ marginRight: "16px" }}
           />
