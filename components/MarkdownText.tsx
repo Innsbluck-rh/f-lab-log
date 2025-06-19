@@ -35,6 +35,8 @@ export function MarkdownText(
   useEffect(() => {
     fetchRendered(props.rawMarkdownStr);
   }, [props.rawMarkdownStr]);
+  
+  fetchRendered(props.rawMarkdownStr);
 
   return (
     <div
