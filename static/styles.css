@@ -80,7 +80,7 @@ main {
   display: flex;
   flex-direction: column;
   padding: 36px;
-  padding-top: 72px;
+  padding-top: 52px;
 }
 
 .page-root {
@@ -232,7 +232,7 @@ label {
   .articles-side {
     width: 100%;
     margin-top: 72px;
-    margin-bottom: 72px;
+    margin-bottom: 16px;
     margin-left: 0px;
   }
 
@@ -250,6 +250,7 @@ label {
   .form-side {
     width: 100%;
     margin-top: 36px;
+    margin-bottom: 16px;
     margin-left: 0;
   }
 

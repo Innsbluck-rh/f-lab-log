@@ -2,7 +2,7 @@ export function NavBar(props: { url?: URL }) {
   return (
     <div
       class="w100 fl-row ai-center"
-      style={{ gap: "36px", paddingRight: "16px" }}
+      style={{ gap: "16px", paddingRight: "16px" }}
     >
       <a
         style={{
@@ -10,6 +10,7 @@ export function NavBar(props: { url?: URL }) {
           fontSize: "24px",
           // color: props.url?.pathname === "/" ? "#00BB" : "inherit",
           textDecoration: "none",
+          marginRight: "auto",
         }}
         href="/"
       >
@@ -27,7 +28,8 @@ export function NavBar(props: { url?: URL }) {
         Home
       </a> */
       }
-      <div style={{ flexGrow: 1 }} />
+      {
+        /* <div style={{ flexGrow: 1 }} />
       {props.url?.pathname.startsWith("/edit")
         ? (
           <a
@@ -40,7 +42,8 @@ export function NavBar(props: { url?: URL }) {
             Edit
           </a>
         )
-        : null}
+        : null} */
+      }
 
       {props.url?.pathname.startsWith("/create") ? null : (
         <a
