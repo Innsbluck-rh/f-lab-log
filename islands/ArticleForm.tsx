@@ -68,6 +68,15 @@ export default function ArticleForm(props: {
     } else {
       articleObj.createdAt = Date.now();
     }
+    if (isTimeEnabled.value) {
+      articleObj.in_time = defaultArticle.in_time ??
+        getDefaultArticle().in_time;
+      articleObj.out_time = defaultArticle.out_time ??
+        getDefaultArticle().out_time;
+    } else {
+      articleObj.in_time = undefined;
+      articleObj.out_time = undefined;
+    }
 
     return articleObj;
   };
@@ -174,14 +183,7 @@ export default function ArticleForm(props: {
             defaultChecked={isTimeEnabled.peek()}
             onChange={(e) => {
               isTimeEnabled.value = e.currentTarget.checked;
-              const a = article.peek();
-              if (e.currentTarget.checked && a) {
-                a.in_time = defaultArticle.in_time ??
-                  getDefaultArticle().in_time;
-                a.out_time = defaultArticle.out_time ??
-                  getDefaultArticle().out_time;
-                article.value = a;
-              }
+              handleChange();
             }}
             style={{ marginRight: "16px" }}
           />
