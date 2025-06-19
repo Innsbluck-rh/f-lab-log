@@ -2,6 +2,7 @@ import { useSignal } from "@preact/signals";
 import { MarkdownText } from "../components/MarkdownText.tsx";
 import { TagItem } from "../components/TagItem.tsx";
 import { Article } from "../models/Article.ts";
+import { PopupMenu } from "./PopupMenu.tsx";
 
 export function ArticleItem(
   props: { article?: Article; id?: string; highlightTag?: string },
@@ -95,11 +96,12 @@ export function ArticleItem(
       </div>
 
       <div
-        class="fl-col"
+        class="fl-row"
         style={{
           position: "absolute",
           right: "4px",
           top: 0,
+          gap: "8px",
           visibility: props.id ? "visible" : "collapse",
         }}
       >
@@ -115,7 +117,32 @@ export function ArticleItem(
           ID: {props.id}
         </p>
 
-        <div
+        <PopupMenu
+          items={[
+            {
+              title: "Edit",
+              onClick: () => {
+                location.href = `/edit/${props.id}`;
+                return true;
+              },
+            },
+            {
+              title: "Delete",
+              color: "red",
+              onClick: async () => {
+                const res = await fetch(`/api/log/${props.id}`, {
+                  method: "DELETE",
+                  body: JSON.stringify({}),
+                });
+                if (res.ok) location.reload();
+                return true;
+              },
+            },
+          ]}
+        />
+
+        {
+          /* <div
           class="fl-row w100"
           style={{
             gap: "12px",
@@ -143,7 +170,8 @@ export function ArticleItem(
           >
             DELETE
           </a>
-        </div>
+        </div> */
+        }
       </div>
     </div>
   );

@@ -6,6 +6,10 @@
 * {
   margin: 0;
 }
+ul {
+  list-style: none;
+  padding-left: 0;
+}
 button {
   color: inherit;
 }
@@ -188,6 +192,17 @@ label {
   margin-top: 48px;
   margin-bottom: 12px;
   gap: 16px;
+}
+
+.popup-menu-item {
+  cursor: pointer;
+  pointer-events: all;
+  padding: 4px 12px;
+  background-color: transparent;
+}
+
+.popup-menu-item:hover {
+  background-color: #00000010;
 }
 
 @media screen and (max-width: 960px) {
