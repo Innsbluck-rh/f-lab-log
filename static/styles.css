@@ -184,6 +184,12 @@ label {
   background-color: #555;
 }
 
+.footer-root {
+  margin-top: 64px;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
 @media screen and (max-width: 960px) {
   .page-root {
     display: flex;
@@ -230,5 +236,11 @@ label {
     width: 100%;
     margin-top: 36px;
     margin-left: 0;
+  }
+
+  .footer-root {
+    margin-top: 0px;
+    margin-bottom: 24px;
+    gap: 16px;
   }
 }

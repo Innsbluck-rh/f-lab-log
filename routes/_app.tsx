@@ -1,4 +1,5 @@
 import { type PageProps } from "$fresh/server.ts";
+import { Footer } from "../components/Footer.tsx";
 import { NavBar } from "../components/NavBar.tsx";
 
 export default function App(
@@ -18,6 +19,7 @@ export default function App(
         <main>
           <Component />
         </main>
+        <Footer />
       </body>
     </html>
   );
