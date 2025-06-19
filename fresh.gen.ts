@@ -18,6 +18,7 @@ import * as $ArticleItem from "./islands/ArticleItem.tsx";
 import * as $ArticlesSideContent from "./islands/ArticlesSideContent.tsx";
 import * as $CreateForm from "./islands/CreateForm.tsx";
 import * as $EditForm from "./islands/EditForm.tsx";
+import * as $MDAssistedTextArea from "./islands/MDAssistedTextArea.tsx";
 import * as $PopupMenu from "./islands/PopupMenu.tsx";
 import * as $SearchQueryForm from "./islands/SearchQueryForm.tsx";
 import * as $SortDropdown from "./islands/SortDropdown.tsx";
@@ -44,6 +45,7 @@ const manifest = {
     "./islands/ArticlesSideContent.tsx": $ArticlesSideContent,
     "./islands/CreateForm.tsx": $CreateForm,
     "./islands/EditForm.tsx": $EditForm,
+    "./islands/MDAssistedTextArea.tsx": $MDAssistedTextArea,
     "./islands/PopupMenu.tsx": $PopupMenu,
     "./islands/SearchQueryForm.tsx": $SearchQueryForm,
     "./islands/SortDropdown.tsx": $SortDropdown,

@@ -5,6 +5,7 @@ import {
   isRequiredField,
 } from "../models/Article.ts";
 import { ArticleItem } from "./ArticleItem.tsx";
+import { MDAssistedTextArea } from "./MDAssistedTextArea.tsx";
 
 type SubmitMode = "home" | "reset" | "nothing";
 
@@ -225,33 +226,14 @@ export default function ArticleForm(props: {
           <label htmlFor="content" style={{ fontWeight: "bold" }}>
             CONTENT
           </label>
-          <textarea
+          <MDAssistedTextArea
             name="content"
-            type="text"
-            autoComplete="off"
-            style={{ height: "200px", resize: "vertical" }}
+            style={{ height: "200px", resize: "vertical", whiteSpace: "pre" }}
             onInput={() => handleChange()}
-            onKeyDown={(e) => {
-              if (e.key == "Tab") {
-                e.preventDefault();
-                const input = e.currentTarget;
-                const start = input.selectionStart;
-                const end = input.selectionEnd;
-
-                // set textarea value to: text before caret + tab + text after caret
-                input.value = input.value.substring(0, start) +
-                  "\t" + input.value.substring(end);
-
-                // put caret at right position again
-                input.selectionStart =
-                  input.selectionEnd =
-                    start + 1;
-              }
-            }}
             required={isRequiredField("content")}
           >
             {article.peek()?.content}
-          </textarea>
+          </MDAssistedTextArea>
         </div>
 
         <div class="fl-row">
