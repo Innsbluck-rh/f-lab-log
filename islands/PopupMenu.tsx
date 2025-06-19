@@ -45,7 +45,7 @@ export function PopupMenu(props: { items?: MenuItem[] }) {
             overflow: "hidden",
             minWidth: "70px",
             filter: "drop-shadow(0px 4px 5px #00000035)",
-            opacity: isShown.value ? 1 : 0,
+            visibility: isShown.value ? "visible" : "collapse",
           }}
         >
           {props.items?.map((item, i) => {
