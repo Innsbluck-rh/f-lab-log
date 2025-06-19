@@ -130,11 +130,15 @@ export function ArticleItem(
               title: "Delete",
               color: "red",
               onClick: async () => {
-                const res = await fetch(`/api/log/${props.id}`, {
-                  method: "DELETE",
-                  body: JSON.stringify({}),
-                });
-                if (res.ok) location.reload();
+                if (confirm("記事を削除しますか？")) {
+                  const res = await fetch(`/api/log/${props.id}`, {
+                    method: "DELETE",
+                    body: JSON.stringify({}),
+                  });
+                  if (res.ok) location.reload();
+                } else {
+                  // cancelled
+                }
                 return true;
               },
             },
