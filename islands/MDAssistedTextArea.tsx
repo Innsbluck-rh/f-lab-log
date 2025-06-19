@@ -55,8 +55,11 @@ export function MDAssistedTextArea(
             if (res) {
               e.preventDefault();
               const copyStr = res[1];
-              lines[lineNumber + 1] = copyStr;
+              lines.splice(lineNumber + 1, 0, copyStr);
               textarea.value = lines.join("\n");
+              const lengthUntil =
+                lines.slice(0, lineNumber + 2).join(" ").length;
+              textarea.selectionEnd = lengthUntil;
             }
           }
         }
