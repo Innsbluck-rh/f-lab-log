@@ -1,5 +1,6 @@
 import { useEffect } from "preact/hooks";
 
+// deno-lint-ignore no-explicit-any
 const debounce = <T extends (...args: any[]) => unknown>(
   callback: T,
   delay = 250,
@@ -27,7 +28,8 @@ export function MarkdownText(
         const data = await res.json();
         if (divEl) divEl.setHTMLUnsafe(data.rendered);
       }
-    } catch (e: any) {
+      // deno-lint-ignore no-explicit-any
+    } catch (_e: any) {
       // console.log(e);
     }
   }, 70);
