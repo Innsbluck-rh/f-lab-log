@@ -30,18 +30,17 @@ export function MarkdownText(
     } catch (e: any) {
       // console.log(e);
     }
-  }, 100);
+  }, 70);
 
   useEffect(() => {
-    fetchRendered(props.rawMarkdownStr);
+    if (divEl) fetchRendered(props.rawMarkdownStr);
   }, [props.rawMarkdownStr]);
-
-  fetchRendered(props.rawMarkdownStr);
 
   return (
     <div
       ref={(ref) => {
         divEl = ref;
+        if (divEl) fetchRendered(props.rawMarkdownStr);
       }}
       data-color-mode="light"
       data-light-theme="light"
