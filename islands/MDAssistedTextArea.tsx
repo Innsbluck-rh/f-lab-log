@@ -4,7 +4,7 @@ export function MDAssistedTextArea(
   props: JSX.HTMLAttributes<HTMLTextAreaElement>,
 ) {
   const preservedSequences = [
-    "  ", // インデント
+    // "  ", // インデント
     "\\t", // タブ
     "- ", // リスト
     "\\+ ",
@@ -26,40 +26,71 @@ export function MDAssistedTextArea(
 
         if (e.key == "Tab") {
           e.preventDefault();
-          const start = textarea.selectionStart;
-          const end = textarea.selectionEnd;
+          const lastSelectionStart = textarea.selectionStart;
 
-          // set textarea value to: text before caret + tab + text after caret
-          textarea.value = textarea.value.substring(0, start) +
-            "  " + textarea.value.substring(end);
-
-          // put caret at right position again
-          textarea.selectionStart =
-            textarea.selectionEnd =
-              start + 1;
-        }
-
-        if (e.key === "Enter") {
-          // 改行前の行
+          // 改行前の行番号
           const lineNumber =
             textarea.value.substring(0, textarea.selectionStart).split("\n")
               .length - 1;
 
           const lines = textarea.value.split("\n");
           if (lineNumber <= lines.length) {
-            const prevLineStr = lines[lineNumber];
+            if (e.shiftKey) { // shiftで削除
+              if (lines[lineNumber].startsWith("\t")) {
+                lines[lineNumber] = lines[lineNumber].substring(
+                  1,
+                  lines[lineNumber].length,
+                );
+              }
+              textarea.value = lines.join("\n");
+              textarea.selectionEnd = lastSelectionStart - 1; // \t削除分
+            } else {
+              lines[lineNumber] = "\t" + lines[lineNumber];
+              textarea.value = lines.join("\n");
+              textarea.selectionEnd = lastSelectionStart + 1; // \t追加分
+            }
+          }
+        }
+
+        if (e.key === "Enter") {
+          // 改行前の行番号
+          const lineNumber =
+            textarea.value.substring(0, textarea.selectionStart).split("\n")
+              .length - 1;
+
+          const lines = textarea.value.split("\n");
+          if (lineNumber <= lines.length) {
+            // const prevLineStr = lines[lineNumber];
+
+            const strBeforePrevLineStart = lines.slice(0, lineNumber)
+              .join("\n"); // 0文字目～該当行の直前までの文字列
+            const strBeforeCursor = textarea.value.substring(
+              0,
+              textarea.selectionStart,
+            ); // 0文字目～該当行のカーソル位置までの文字列
+
+            // カーソル以前の行内容
+            const lineStrBeforeCursor = textarea.value.substring(
+              strBeforePrevLineStart.length + 1, // cut new line
+              strBeforeCursor.length,
+            );
+
             const prefixRegex = new RegExp(
               `((?:${preservedSequences.toReversed().join("|")})+).*`,
             );
-            const res = prefixRegex.exec(prevLineStr);
+            const res = prefixRegex.exec(lineStrBeforeCursor);
             if (res) {
               e.preventDefault();
-              const copyStr = res[1];
+              let copyStr = res[1];
+              if (e.shiftKey) copyStr = copyStr.replace(/./g, " ");
+
               lines.splice(lineNumber + 1, 0, copyStr);
               textarea.value = lines.join("\n");
-              const lengthUntil =
-                lines.slice(0, lineNumber + 2).join(" ").length;
-              textarea.selectionEnd = lengthUntil;
+              const strUntilInserted = textarea.value.substring(
+                0,
+                lines.slice(0, lineNumber + 2).join("\n").length,
+              );
+              textarea.selectionEnd = strUntilInserted.length;
             }
           }
         }
