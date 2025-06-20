@@ -64,6 +64,9 @@ export function MDAssistedTextArea(
 
             const strBeforePrevLineStart = lines.slice(0, lineNumber)
               .join("\n"); // 0文字目～該当行の直前までの文字列
+            const strBeforeLineEnd = lines.slice(0, lineNumber + 1)
+              .join("\n"); // 0文字目～該当行の最後までの文字列
+
             const strBeforeCursor = textarea.value.substring(
               0,
               textarea.selectionStart,
@@ -71,20 +74,30 @@ export function MDAssistedTextArea(
 
             // カーソル以前の行内容
             const lineStrBeforeCursor = textarea.value.substring(
-              strBeforePrevLineStart.length + 1, // cut new line
+              strBeforePrevLineStart.length + (lineNumber !== 0 ? 1 : 0), // cut new line
               strBeforeCursor.length,
             );
+            // カーソル以降の行内容
+            const lineStrAfterCursor = textarea.value.substring(
+              strBeforeCursor.length,
+              strBeforeLineEnd.length,
+            );
+
+            // console.log(lineStrBeforeCursor + " / " + lineStrAfterCursor);
 
             const prefixRegex = new RegExp(
               `((?:${preservedSequences.toReversed().join("|")})+).*`,
             );
             const res = prefixRegex.exec(lineStrBeforeCursor);
+
             if (res) {
               e.preventDefault();
               let copyStr = res[1];
               if (e.shiftKey) copyStr = copyStr.replace(/./g, " ");
 
-              lines.splice(lineNumber + 1, 0, copyStr);
+              lines[lineNumber] = lineStrBeforeCursor;
+
+              lines.splice(lineNumber + 1, 0, copyStr + lineStrAfterCursor);
               textarea.value = lines.join("\n");
               const strUntilInserted = textarea.value.substring(
                 0,
